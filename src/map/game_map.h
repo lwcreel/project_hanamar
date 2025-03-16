@@ -16,6 +16,7 @@ public:
     GameMap(int map_size_x, int map_size_y);
     void PrintMap();
     void PrintUserPosition(int user_position_x, int user_position_y);
+    void PrintMobPosition(int mob_position_x, int mob_position_y, std::string mob_icon);
 };
 
 #endif

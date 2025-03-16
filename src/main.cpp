@@ -1,3 +1,4 @@
+#include "entities/mobs/mob.h"
 #include "entities/player/player.h"
 #include "map/game_map.h"
 #include <iostream>
@@ -7,6 +8,7 @@ int main()
 {
     GameMap* map = new GameMap(20, 20);
     Player* player = new Player();
+    Mob* mob = new Mob(7, 12);
     char command;
 
     std::cout << "Welcome to Project Hanamar!" << std::endl;

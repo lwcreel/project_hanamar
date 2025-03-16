@@ -67,3 +67,37 @@ void GameMap::PrintUserPosition(int user_position_x, int user_position_y)
     std::cout << map_horizontal_border_ << std::endl;
     return;
 }
+
+void GameMap::PrintMobPosition(int mob_position_x, int mob_position_y, std::string mob_icon)
+{
+
+    if (OutOfBounds(mob_position_x, mob_position_y)) {
+        std::cout << "ERROR: Out of Bounds!" << std::endl;
+        return;
+    }
+
+    std::string curr_user_row;
+    curr_user_row.append("|");
+
+    for (int curr_x = 0; curr_x < map_boundary_x_ - 1; curr_x++) {
+        if (curr_x != mob_position_x)
+            curr_user_row.append(" ");
+        else
+            curr_user_row.append(mob_icon);
+    }
+
+    curr_user_row.append("|");
+
+    std::cout << map_horizontal_border_ << std::endl;
+
+    for (int curr_y = 0; curr_y < map_boundary_y_; curr_y++) {
+        if (mob_position_y != curr_y) {
+            std::cout << map_row_no_player_ << std::endl;
+            continue;
+        }
+        std::cout << curr_user_row << std::endl;
+    }
+
+    std::cout << map_horizontal_border_ << std::endl;
+    return;
+}

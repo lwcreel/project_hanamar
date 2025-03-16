@@ -1,17 +1,21 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef MOB_H
+#define MOB_H
 
-// TODO: Move to a parent Entity class
+#include <string>
 
-class Player {
+// TODO: Move to a parent entity class
+
+class Mob {
 
     int pos_x_;
     int pos_y_;
     int health_ = 10;
+    std::string mob_icon_;
 
 public:
-    Player();
-    Player(int pos_x, int pos_y);
+    Mob();
+    Mob(int pos_x, int pos_y);
+    Mob(int pos_x, int pos_y, std::string mob_icon);
 
     int get_pos_x_();
     int get_pos_y_();
