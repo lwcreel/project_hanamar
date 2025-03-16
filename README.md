@@ -4,10 +4,15 @@ Project Hanamar is a simple ASCII game intended to help me keep my C++ skills sh
 
 ## Installation
 
-Clone this repository and run the following command:
+Clone this repository and run the following commands from the root directory:
 
 ```bash
-make && ./ main
+mkdir build && cd build && cmake .. && make && ./main
+```
+
+Once the Makefile has been generated, you can do the following
+```bash
+make && ./main
 ```
 
 ## Contributing
