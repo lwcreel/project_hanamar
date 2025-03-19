@@ -1,6 +1,6 @@
 # Project Hanamar
 
-Project Hanamar is a simple ASCII game intended to help me keep my C++ skills sharp and experiment with game development.
+Project Hanamar is a simple ASCII game intended to help me keep my C++ skills sharp and play around with game development.
 
 ## Installation
 
