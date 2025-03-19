@@ -8,7 +8,7 @@ int main()
 {
     GameMap* map = new GameMap(20, 20);
     Player* player = new Player();
-    Mob* mob = new Mob(7, 12);
+    Mob* mob = new Mob(7, 12, "X");
     char command;
 
     std::cout << "Welcome to Project Hanamar!" << std::endl;
@@ -21,16 +21,16 @@ int main()
 
         switch (command) {
         case 'w':
-            player->MoveDown();
+            player->Entity::MoveDown();
             break;
         case 'a':
-            player->MoveLeft();
+            player->Entity::MoveLeft();
             break;
         case 's':
-            player->MoveUp();
+            player->Entity::MoveUp();
             break;
         case 'd':
-            player->MoveRight();
+            player->Entity::MoveRight();
             break;
         }
         system("clear");

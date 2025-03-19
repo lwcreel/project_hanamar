@@ -1,29 +1,22 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "../entity.h"
+
 // TODO: Move to a parent Entity class
 
-class Player {
-
-    int pos_x_;
-    int pos_y_;
-    int health_ = 10;
-
+class Player : public Entity {
 public:
-    Player();
-    Player(int pos_x, int pos_y);
+    Player()
+        : Entity()
+    {
+        Entity::pos_x_ = 0;
+        Entity::pos_y_ = 0;
+        Entity::entity_icon_ = "@";
+    };
 
-    int get_pos_x_();
-    int get_pos_y_();
-    int get_health_();
-    void set_pos_x(int pos_x);
-    void set_pos_y(int pos_y);
-    void set_health_(int health);
-
-    void MoveLeft();
-    void MoveRight();
-    void MoveUp();
-    void MoveDown();
+    Player(int pos_x, int pos_y, std::string icon)
+        : Entity(pos_x, pos_y, icon) { };
 };
 
 #endif
