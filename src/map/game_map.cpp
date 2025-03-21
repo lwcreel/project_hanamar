@@ -21,6 +21,13 @@ GameMap::GameMap(int map_size_x, int map_size_y)
         this->map_row_no_player_.append(" ");
     }
     this->map_row_no_player_.append("|");
+
+    for (int i = 0; i < map_size_x; i++) {
+        for (int j = 0; j < map_size_y; j++) {
+
+            this->map_[i][j] = ' ';
+        }
+    }
 }
 
 void GameMap::PrintMap()

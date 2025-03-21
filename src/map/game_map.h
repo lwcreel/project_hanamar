@@ -2,6 +2,7 @@
 #define GAME_MAP_H
 
 #include <string>
+#include <vector>
 
 class GameMap {
 
@@ -9,6 +10,7 @@ class GameMap {
     int map_boundary_y_;
     std::string map_horizontal_border_;
     std::string map_row_no_player_;
+    std::vector<std::vector<char>> map_;
 
     bool OutOfBounds(int x_pos, int y_pos);
 
