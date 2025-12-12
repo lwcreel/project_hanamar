@@ -5,32 +5,32 @@
 #include <unistd.h>
 
 int main() {
-
-  GameMap map = GameMap(20, 20);
-  Player player = Player(1, 1, "@");
-  Mob mob = Mob(7, 12, "X");
+  GameMap *map = new GameMap(20, 20);
+  Player *player = new Player();
+  Mob *mob = new Mob(7, 12, "X");
   char command;
 
   std::cout << "Welcome to Project Hanamar!" << std::endl;
 
   while (true) {
-    map.PrintUserPosition(player.getX(), player.getY());
+
+    map->printMap();
 
     std::cout << "Use WASD + Enter to Move and CTRL + C to Exit" << std::endl;
     std::cin >> command;
 
     switch (command) {
     case 'w':
-      player.Entity::MoveDown();
+      player->Entity::MoveDown();
       break;
     case 'a':
-      player.Entity::MoveLeft();
+      player->Entity::MoveLeft();
       break;
     case 's':
-      player.Entity::MoveUp();
+      player->Entity::MoveUp();
       break;
     case 'd':
-      player.Entity::MoveRight();
+      player->Entity::MoveRight();
       break;
     }
     system("clear");

@@ -5,23 +5,19 @@
 #include <string>
 #include <vector>
 
+// TODO: Convert mapGrid to 1D for better performance?
 class GameMap {
 
-  int mapBoundaryX;
-  int mapBoundaryY;
-  std::string mapBorderX;
-  std::string mapRow;
+  int mapWidth;
+  int mapHeight;
   std::vector<std::vector<std::string>> mapGrid;
 
-  bool OutOfBounds(int x, int y);
+  bool isOutOfBounds(int x, int y);
 
 public:
   GameMap(int mapWidth, int mapHeight);
-  void PrintMap();
-  void PrintEntity(Entity *entity);
-  void PrintUserPosition(int user_position_x, int user_position_y);
-  void PrintMobPosition(int mob_position_x, int mob_position_y,
-                        std::string mob_icon);
+  void printMap();
+  void writeEntityPosition(Entity *entity);
 };
 
 #endif
