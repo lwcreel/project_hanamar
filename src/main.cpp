@@ -14,7 +14,7 @@ int main() {
   std::cout << "Welcome to Project Hanamar!" << std::endl;
 
   while (true) {
-    map.PrintUserPosition(player.get_pos_x_(), player.get_pos_y_());
+    map.PrintUserPosition(player.getX(), player.getY());
 
     std::cout << "Use WASD + Enter to Move and CTRL + C to Exit" << std::endl;
     std::cin >> command;
