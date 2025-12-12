@@ -24,5 +24,14 @@ void GameMap::printMap() {
 
 void GameMap::writeEntityPosition(Entity *entity) {
 
-  this->mapGrid[entity->y][entity->x] = entity->entityIcon;
+  if (!isOutOfBounds(entity->x, entity->y))
+    this->mapGrid.at(entity->x).at(entity->y) = entity->entityIcon;
+  return;
+}
+
+void GameMap::writeToPosition(int x, int y, std::string s) {
+
+  if (!isOutOfBounds(x, y))
+    this->mapGrid.at(x).at(y) = s;
+  return;
 }

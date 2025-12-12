@@ -4,6 +4,7 @@
 #include <string>
 
 class Entity {
+  int id;
 
 public:
   int x;

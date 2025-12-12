@@ -6,6 +6,7 @@
 class Mob : public Entity {
 
 public:
+  Mob() : Entity() {};
   Mob(int x, int y, std::string icon) : Entity(x, y, icon) {};
 };
 

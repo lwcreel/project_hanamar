@@ -14,6 +14,7 @@ int main() {
 
   while (true) {
 
+    map->writeEntityPosition(player);
     map->printMap();
 
     std::cout << "Use WASD + Enter to Move and CTRL + C to Exit" << std::endl;
@@ -33,6 +34,7 @@ int main() {
       player->Entity::MoveRight();
       break;
     }
+    map->writeEntityPosition(player);
     system("clear");
   }
 
