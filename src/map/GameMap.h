@@ -18,8 +18,8 @@ class GameMap {
 public:
   GameMap(int mapWidth, int mapHeight);
   void printMap();
-  void writeEntityPosition(Entity *entity);
-  void writeToPosition(int x, int y, std::string s);
+  void renderEntityAtPos(Entity *entity);
+  void renderAtPosition(int x, int y, std::string s);
 };
 
 #endif

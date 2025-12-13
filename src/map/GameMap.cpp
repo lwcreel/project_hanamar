@@ -1,10 +1,6 @@
 #include "GameMap.h"
 #include <iostream>
 
-bool GameMap::isOutOfBounds(int x, int y) {
-  return !(x < this->mapWidth || x >= 0 || y < this->mapHeight || y >= 0);
-}
-
 GameMap::GameMap(int mapWidth, int mapHeight) {
   this->mapWidth = mapWidth;
   this->mapHeight = mapHeight;
@@ -22,16 +18,10 @@ void GameMap::printMap() {
   }
 }
 
-void GameMap::writeEntityPosition(Entity *entity) {
-
-  if (!isOutOfBounds(entity->x, entity->y))
-    this->mapGrid.at(entity->x).at(entity->y) = entity->entityIcon;
-  return;
+void GameMap::renderEntityAtPos(Entity *entity) {
+  this->mapGrid.at(entity->x).at(entity->y) = entity->entityIcon;
 }
 
-void GameMap::writeToPosition(int x, int y, std::string s) {
-
-  if (!isOutOfBounds(x, y))
-    this->mapGrid.at(x).at(y) = s;
-  return;
+void GameMap::renderAtPosition(int x, int y, std::string s) {
+  this->mapGrid.at(x).at(y) = s;
 }

@@ -7,7 +7,7 @@ class Mob : public Entity {
 
 public:
   Mob() : Entity() {};
-  Mob(int x, int y, std::string icon) : Entity(x, y, icon) {};
+  Mob(int x, int y, int id, std::string icon) : Entity(x, y, id, icon) {};
 };
 
 #endif

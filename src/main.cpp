@@ -1,22 +1,23 @@
 #include "entities/mobs/Mob.h"
 #include "entities/player/Player.h"
-#include "map/GameMap.h"
+#include "management/GameManager.h"
 #include <iostream>
 #include <unistd.h>
 
 int main() {
-  GameMap *map = new GameMap(20, 20);
   Player *player = new Player();
-  Mob *mob = new Mob(7, 12, "X");
+  Mob *mob = new Mob(7, 12, 1, "X");
+  GameManager *manager = new GameManager(20, 20);
+
   char command;
 
   std::cout << "Welcome to Project Hanamar!" << std::endl;
 
   while (true) {
 
-    map->writeEntityPosition(player);
-    map->printMap();
-
+    manager->spawnEntity(player);
+    manager->spawnEntity(mob);
+    manager->mainLoop();
     std::cout << "Use WASD + Enter to Move and CTRL + C to Exit" << std::endl;
     std::cin >> command;
 
@@ -34,7 +35,6 @@ int main() {
       player->Entity::MoveRight();
       break;
     }
-    map->writeEntityPosition(player);
     system("clear");
   }
 

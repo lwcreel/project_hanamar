@@ -11,10 +11,11 @@ public:
   Player() : Entity() {
     Entity::x = 0;
     Entity::y = 0;
+    Entity::id = 0;
     Entity::entityIcon = "@";
   };
 
-  Player(int x, int y, std::string icon) : Entity(x, y, icon) {};
+  Player(int x, int y, int id, std::string icon) : Entity(x, y, id, icon) {};
 };
 
 #endif

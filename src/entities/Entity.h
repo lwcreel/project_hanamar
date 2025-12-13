@@ -4,6 +4,8 @@
 #include <string>
 
 class Entity {
+private:
+protected:
   int id;
 
 public:
@@ -14,11 +16,12 @@ public:
   std::string entityIcon;
 
   Entity();
-  Entity(int x, int y);
-  Entity(int x, int y, std::string entityIcon);
+  Entity(int x, int y, int id);
+  Entity(int x, int y, int id, std::string entityIcon);
 
   int getX();
   int getY();
+  int getId();
   int getHealth();
   void setX(int x);
   void setY(int y);
