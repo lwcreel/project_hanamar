@@ -15,15 +15,16 @@ PhysicsEngine::PhysicsEngine(Position upperBound, Position lowerBound,
   this->entityPositions = entities;
 }
 
-bool PhysicsEngine::isOutOfBounds(int x, int y) {
-  return !(x < this->upperBound.x || x >= lowerBound.x ||
-           y < this->upperBound.y || y >= lowerBound.y);
+bool PhysicsEngine::isOutOfBounds(Position position) {
+  return !(position.x < this->upperBound.x || position.x >= lowerBound.x ||
+           position.y < this->upperBound.y || position.y >= lowerBound.y);
 }
 
 std::unordered_map<int, Position> PhysicsEngine::getEntityPositions() {
   return this->entityPositions;
 }
 
-void PhysicsEngine::setEntityPositions(std::unordered_map<int, Position>) {
-  return;
+void PhysicsEngine::setEntityPositions(
+    std::unordered_map<int, Position> newPositions) {
+  this->entityPositions = newPositions;
 }

@@ -19,9 +19,10 @@ void GameMap::printMap() {
 }
 
 void GameMap::renderEntityAtPos(Entity *entity) {
-  this->mapGrid.at(entity->x).at(entity->y) = entity->entityIcon;
+  this->mapGrid.at(entity->getPosition().x).at(entity->getPosition().y) =
+      entity->entityIcon;
 }
 
-void GameMap::renderAtPosition(int x, int y, std::string s) {
-  this->mapGrid.at(x).at(y) = s;
+void GameMap::renderAtPos(Position position, std::string s) {
+  this->mapGrid.at(position.x).at(position.y) = s;
 }

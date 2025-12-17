@@ -20,9 +20,13 @@ class GameManager {
   std::unordered_map<int, Entity *> entities;
 
 public:
-  GameManager(int mapWidth, int mapHeight);
+  GameManager(int mapWidth, int mapHeight,
+              std::unordered_map<int, Entity *> entities);
   void spawnEntity(Entity *entity);
   void updateEntityPosition(Entity *entity);
+  void updateEntities();
+  void outOfBoundsCheck();
+  void startMainLoop();
   void mainLoop();
 };
 

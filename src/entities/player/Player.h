@@ -9,8 +9,7 @@ class Player : public Entity {
 
 public:
   Player() : Entity() {
-    Entity::x = 0;
-    Entity::y = 0;
+    Entity::position = {0, 0};
     Entity::id = 0;
     Entity::entityIcon = "@";
   };

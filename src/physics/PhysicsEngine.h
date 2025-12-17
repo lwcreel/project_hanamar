@@ -18,7 +18,7 @@ public:
   PhysicsEngine();
   PhysicsEngine(Position upperBound, Position lowerBound,
                 std::unordered_map<int, Position> entities);
-  bool isOutOfBounds(int x, int y);
+  bool isOutOfBounds(Position position);
   Position entityCollision(Entity *entity1, Entity *entity2);
   std::unordered_map<int, Position> getEntityPositions();
   void setEntityPositions(std::unordered_map<int, Position> newEntityPositions);

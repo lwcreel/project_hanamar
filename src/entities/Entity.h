@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "../utils/Position.h"
 #include <string>
 
 class Entity {
@@ -9,9 +10,7 @@ protected:
   int id;
 
 public:
-  int x;
-  int y;
-
+  Position position;
   int health = 10;
   std::string entityIcon;
 
@@ -19,6 +18,8 @@ public:
   Entity(int x, int y, int id);
   Entity(int x, int y, int id, std::string entityIcon);
 
+  Position getPosition();
+  void setPosition(Position position);
   int getX();
   int getY();
   int getId();

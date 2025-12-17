@@ -19,7 +19,7 @@ public:
   GameMap(int mapWidth, int mapHeight);
   void printMap();
   void renderEntityAtPos(Entity *entity);
-  void renderAtPosition(int x, int y, std::string s);
+  void renderAtPos(Position, std::string s);
 };
 
 #endif
