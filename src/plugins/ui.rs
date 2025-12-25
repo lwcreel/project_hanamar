@@ -14,11 +14,11 @@ impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::Setup), setup_button)
             .add_systems(Update, button_system.run_if(in_state(AppState::Finished)))
-            .add_event::<ResetMapEvent>();
+            .add_message::<ResetMapEvent>();
     }
 }
 
-#[derive(Event)]
+#[derive(Event, Message)]
 pub struct ResetMapEvent;
 
 #[allow(clippy::type_complexity)]
@@ -27,7 +27,7 @@ pub fn button_system(
         (&Interaction, &mut BackgroundColor, &mut BorderColor),
         (Changed<Interaction>, With<Button>),
     >,
-    mut events: EventWriter<ResetMapEvent>,
+    mut events: MessageWriter<ResetMapEvent>,
     mut mouse_buttons: ResMut<ButtonInput<MouseButton>>,
 ) {
     for (interaction, mut color, mut border_color) in &mut interaction_query {
@@ -35,16 +35,16 @@ pub fn button_system(
             Interaction::Pressed => {
                 mouse_buttons.clear_just_pressed(MouseButton::Left);
                 *color = PRESSED_BUTTON.into();
-                border_color.0 = Color::linear_rgb(1., 0., 0.);
+                //border_color = Color::linear_rgb(1., 0., 0.);
                 events.write(ResetMapEvent);
             }
             Interaction::Hovered => {
                 *color = HOVERED_BUTTON.into();
-                border_color.0 = Color::WHITE;
+                //border_color = Color::WHITE;
             }
             Interaction::None => {
                 *color = NORMAL_BUTTON.into();
-                border_color.0 = Color::BLACK;
+                //border_color = Color::BLACK;
             }
         }
     }
@@ -78,21 +78,11 @@ pub fn setup_button(
                         align_items: AlignItems::Center,
                         ..default()
                     },
-                    BorderColor(Color::BLACK),
                     BackgroundColor(NORMAL_BUTTON),
                 ))
                 .with_children(|parent| {
-                    parent.spawn((
-                        Text::new("Reset"),
-                        TextFont {
-                            font: asset_server.load("FiraSans-Bold.ttf"),
-                            font_size: 30.,
-                            ..Default::default()
-                        },
-                        TextColor(Color::srgb(0.9, 0.9, 0.9)),
-                    ));
+                    parent.spawn((Text::new("Reset"), TextColor(Color::srgb(0.9, 0.9, 0.9))));
                 });
         });
     next_state.set(AppState::Build);
 }
-

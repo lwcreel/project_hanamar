@@ -5,7 +5,7 @@ use bevy::log::{Level, LogPlugin};
 use bevy::prelude::*;
 
 // use bevy::text::cosmic_text::Transform;
-use rand::{Rng, thread_rng};
+use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
 
@@ -37,16 +37,13 @@ fn main() {
 }
 
 fn generate_noise_map() -> NoiseMap {
-    let mut rng = thread_rng();
-    let seed: u32 = rng.r#gen();
+    let mut rng = rng();
+    let seed: u32 = rng.random();
 
     let basicmulti = BasicMulti::<Perlin>::new(seed);
+    let basicmulti = PlaneMapBuilder::new(&basicmulti).build();
 
-    PlaneMapBuilder::<_, 2>::new(&basicmulti)
-        // .set_size(100, 100)
-        // .set_x_bounds(-5.0, 5.0)
-        // .set_y_bounds(-5.0, 5.0)
-        .build()
+    return basicmulti;
 }
 
 fn get_color(val: f64) -> bevy::prelude::Color {
