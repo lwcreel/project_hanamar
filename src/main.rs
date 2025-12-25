@@ -2,6 +2,8 @@
 //! individual sprites.
 
 use bevy::log::{Level, LogPlugin};
+use bevy::prelude::Color;
+use bevy::prelude::Srgba;
 use bevy::prelude::*;
 
 // use bevy::text::cosmic_text::Transform;
@@ -46,8 +48,21 @@ fn generate_noise_map() -> NoiseMap {
     return basicmulti;
 }
 
-fn get_color(val: f64) -> bevy::prelude::Color {
-    bevy::prelude::Color::hsl(120., 1., val as f32)
+fn get_color(val: f64) -> Color {
+    let color_result = match val.abs() {
+        v if v < 0.1 => Color::from(Srgba::hex("#0a7e0a").unwrap()),
+        v if v < 0.2 => Color::from(Srgba::hex("#0da50d").unwrap()),
+        v if v < 0.3 => Color::from(Srgba::hex("#10cb10").unwrap()),
+        v if v < 0.4 => Color::from(Srgba::hex("#18ed18").unwrap()),
+        v if v < 0.5 => Color::from(Srgba::hex("#3ff03f").unwrap()),
+        v if v < 0.6 => Color::from(Srgba::hex("#65f365").unwrap()),
+        v if v < 0.7 => Color::from(Srgba::hex("#8cf68c").unwrap()),
+        v if v < 0.8 => Color::from(Srgba::hex("#b2f9b2").unwrap()),
+        v if v < 0.9 => Color::from(Srgba::hex("#d9fcd9").unwrap()),
+        v if v <= 1.0 => Color::from(Srgba::hex("#ffffff").unwrap()),
+        _ => panic!("unexpected value"),
+    };
+    return color_result;
 }
 
 #[derive(Resource, Deref)]
@@ -97,7 +112,7 @@ fn cleanup(mut commands: Commands, root: Res<Root>) {
     commands.entity(**root).despawn();
 }
 
-fn reset(mut events: EventReader<ResetMapEvent>, mut next_state: ResMut<NextState<AppState>>) {
+fn reset(mut events: MessageReader<ResetMapEvent>, mut next_state: ResMut<NextState<AppState>>) {
     for _ in events.read() {
         next_state.set(AppState::Build);
     }

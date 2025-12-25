@@ -24,37 +24,30 @@ pub struct ResetMapEvent;
 #[allow(clippy::type_complexity)]
 pub fn button_system(
     mut interaction_query: Query<
-        (&Interaction, &mut BackgroundColor, &mut BorderColor),
+        (&Interaction, &mut BackgroundColor),
         (Changed<Interaction>, With<Button>),
     >,
     mut events: MessageWriter<ResetMapEvent>,
     mut mouse_buttons: ResMut<ButtonInput<MouseButton>>,
 ) {
-    for (interaction, mut color, mut border_color) in &mut interaction_query {
+    for (interaction, mut color) in &mut interaction_query {
         match *interaction {
             Interaction::Pressed => {
                 mouse_buttons.clear_just_pressed(MouseButton::Left);
                 *color = PRESSED_BUTTON.into();
-                //border_color = Color::linear_rgb(1., 0., 0.);
                 events.write(ResetMapEvent);
             }
             Interaction::Hovered => {
                 *color = HOVERED_BUTTON.into();
-                //border_color = Color::WHITE;
             }
             Interaction::None => {
                 *color = NORMAL_BUTTON.into();
-                //border_color = Color::BLACK;
             }
         }
     }
 }
 
-pub fn setup_button(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
+pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<AppState>>) {
     commands
         .spawn(Node {
             right: Val::Px(10.0),
