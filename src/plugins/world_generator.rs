@@ -1,5 +1,4 @@
 use bevy::prelude::Color;
-use bevy::prelude::Srgba;
 use bevy::prelude::*;
 
 // use bevy::text::cosmic_text::Transform;
@@ -13,6 +12,22 @@ use crate::plugins::ui::ResetMapEvent;
 #[derive(Resource, Deref)]
 pub struct Root(Entity);
 
+enum Hue {
+    RED,
+    BLUE,
+    GREEN,
+    YELLOW,
+}
+
+fn get_hue_from_enum(hue: Hue) -> f32 {
+    match hue {
+        Hue::RED => 355.0,
+        Hue::BLUE => 240.0,
+        Hue::GREEN => 120.0,
+        Hue::YELLOW => 60.0,
+    }
+}
+
 fn generate_noise_map() -> NoiseMap {
     let mut rng = rng();
     let seed: u32 = rng.random();
@@ -23,18 +38,20 @@ fn generate_noise_map() -> NoiseMap {
     return basicmulti;
 }
 
-fn get_color(val: f64) -> Color {
+fn get_color(val: f64, hue: Hue) -> Color {
+    let value = get_hue_from_enum(hue);
+    // saturation at 75, hue from enum, L from .1 to 1.
     let color_result = match val.abs() {
-        v if v < 0.1 => Color::from(Srgba::hex("#0a7e0a").unwrap()),
-        v if v < 0.2 => Color::from(Srgba::hex("#0da50d").unwrap()),
-        v if v < 0.3 => Color::from(Srgba::hex("#10cb10").unwrap()),
-        v if v < 0.4 => Color::from(Srgba::hex("#18ed18").unwrap()),
-        v if v < 0.5 => Color::from(Srgba::hex("#3ff03f").unwrap()),
-        v if v < 0.6 => Color::from(Srgba::hex("#65f365").unwrap()),
-        v if v < 0.7 => Color::from(Srgba::hex("#8cf68c").unwrap()),
-        v if v < 0.8 => Color::from(Srgba::hex("#b2f9b2").unwrap()),
-        v if v < 0.9 => Color::from(Srgba::hex("#d9fcd9").unwrap()),
-        v if v <= 1.0 => Color::from(Srgba::hex("#ffffff").unwrap()),
+        v if v < 0.1 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.1)),
+        v if v < 0.2 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.2)),
+        v if v < 0.3 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.3)),
+        v if v < 0.4 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.4)),
+        v if v < 0.5 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.5)),
+        v if v < 0.6 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.6)),
+        v if v < 0.7 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.7)),
+        v if v < 0.8 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.8)),
+        v if v < 0.9 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 0.9)),
+        v if v < 1.0 => Color::from(bevy::color::Hsla::hsl(value, 0.75, 1.0)),
         _ => panic!("unexpected value"),
     };
     return color_result;
@@ -64,7 +81,7 @@ pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<A
 
                     parent.spawn((
                         Sprite {
-                            color: get_color(val),
+                            color: get_color(val, Hue::BLUE),
                             custom_size: Some(Vec2::new(tile_size, tile_size)),
                             ..default()
                         },
