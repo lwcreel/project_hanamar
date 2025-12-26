@@ -1,10 +1,5 @@
-//! In this example we generate a new texture atlas (sprite sheet) from a folder containing
-//! individual sprites.
-
 use bevy::log::{Level, LogPlugin};
 use bevy::prelude::*;
-
-// use bevy::text::cosmic_text::Transform;
 
 pub mod common;
 mod plugins;
