@@ -4,24 +4,19 @@ Project Hanamar is a project intended to help me develop skills with systems pro
 
 ## Installation
 
-Clone this repository and run the following commands from the root directory:
+Ensure that you have Rust installed and properly configured. Clone this repository and run the following commands from the root directory:
 
 ```bash
-mkdir build && cd build && cmake .. && make && ./main
-```
-
-Once the Makefile has been generated, you can do the following
-```bash
-make && ./main
+cargo run
 ```
 
 ## Contributing
-Feel free to clone or fork this project! No pull requests will be accepted as this is a personal project.
+Feel free to clone or fork this project! No pull requests will be accepted at this time as this is a personal project.
 
 ## Credits
 Example repositories whose work I drew on for this project
-Noise Generator Example: [YegorStolyarov/bevy_noise_generator](https://github.com/YegorStolyarov/bevy_noise_map)
-Game Menu Example: [Bevy Examples](https://bevy.org/examples/games/game-menu/)
+- Noise Generator Example: [YegorStolyarov/bevy_noise_generator](https://github.com/YegorStolyarov/bevy_noise_map)
+- Game Menu Example: [Bevy Examples](https://bevy.org/examples/games/game-menu/)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
