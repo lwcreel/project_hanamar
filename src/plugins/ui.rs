@@ -1,7 +1,7 @@
 //! This example illustrates how to create a button that changes color and text based on its
 //! interaction state.
 
-use crate::common::AppState;
+use crate::plugins::game_menu::GameState;
 use bevy::prelude::*;
 
 const NORMAL_BUTTON: Color = Color::linear_rgb(0.15, 0.15, 0.15);
@@ -12,8 +12,8 @@ pub struct UiPlugin;
 
 impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::Setup), setup_button)
-            .add_systems(Update, button_system.run_if(in_state(AppState::Finished)))
+        app.add_systems(OnEnter(GameState::Game), setup_button)
+            .add_systems(Update, button_system.run_if(in_state(GameState::Game)))
             .add_message::<ResetMapEvent>();
     }
 }
@@ -47,7 +47,7 @@ pub fn button_system(
     }
 }
 
-pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<AppState>>) {
+pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<GameState>>) {
     commands
         .spawn(Node {
             right: Val::Px(10.0),
@@ -74,8 +74,8 @@ pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<App
                     BackgroundColor(NORMAL_BUTTON),
                 ))
                 .with_children(|parent| {
-                    parent.spawn((Text::new("Reset"), TextColor(Color::srgb(0.9, 0.9, 0.9))));
+                    parent.spawn((Text::new("Exit"), TextColor(Color::srgb(0.9, 0.9, 0.9))));
                 });
         });
-    next_state.set(AppState::Build);
+    //next_state.set(GameState::Menu);
 }

@@ -1,15 +1,15 @@
 use bevy::prelude::*;
 
-use crate::common::AppState;
+use crate::plugins::game_menu::GameState;
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::Setup), setup_camera);
+        app.add_systems(OnEnter(GameState::Setup), setup_camera);
         app.add_systems(
             Update,
-            camera_movement_system.run_if(in_state(AppState::Finished)),
+            camera_movement_system.run_if(in_state(GameState::Game)),
         );
     }
 }
@@ -64,4 +64,3 @@ pub fn camera_movement_system(
         *translation += time.delta_secs() * 500.0 * direction;
     }
 }
-

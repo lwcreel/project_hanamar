@@ -1,3 +1,4 @@
+use crate::AppState;
 use bevy::prelude::Color;
 use bevy::prelude::*;
 
@@ -6,7 +7,7 @@ use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
 
-use crate::common::AppState;
+use crate::plugins::game_menu::GameState;
 use crate::plugins::ui::ResetMapEvent;
 
 #[derive(Resource, Deref)]
@@ -57,7 +58,7 @@ fn get_color(val: f64, hue: Hue) -> Color {
     return color_result;
 }
 
-pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<AppState>>) {
+pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<GameState>>) {
     let map = generate_noise_map();
     let (grid_width, grid_height) = map.size();
     debug!("Map size: {}x{}", grid_width, grid_height);
@@ -73,9 +74,6 @@ pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<A
             for col_x in 0..grid_width {
                 for col_y in 0..grid_height {
                     let val = map.get_value(col_x, col_y);
-                    // if val > 0.8_f64 {
-                    // debug!("Value for {}:{} = {}", col_x, col_y, val);
-                    // }
                     let x = start_x + col_x as f32 * tile_size;
                     let y = start_y + col_y as f32 * tile_size;
 
@@ -94,7 +92,7 @@ pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<A
 
     commands.insert_resource(Root(root));
 
-    next_state.set(AppState::Finished);
+    //next_state.set(GameState::Finished);
 }
 
 pub fn cleanup(mut commands: Commands, root: Res<Root>) {
@@ -103,9 +101,9 @@ pub fn cleanup(mut commands: Commands, root: Res<Root>) {
 
 pub fn reset(
     mut events: MessageReader<ResetMapEvent>,
-    mut next_state: ResMut<NextState<AppState>>,
+    mut next_state: ResMut<NextState<GameState>>,
 ) {
     for _ in events.read() {
-        next_state.set(AppState::Build);
+        next_state.set(GameState::Build);
     }
 }

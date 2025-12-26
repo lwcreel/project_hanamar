@@ -16,7 +16,7 @@ make && ./main
 ```
 
 ## Contributing
-Feel free to clone or fork this project as a starting point for your own C++ journey! No pull requests will be accepted as this is a personal project.
+Feel free to clone or fork this project! No pull requests will be accepted as this is a personal project.
 
 ## License
 
