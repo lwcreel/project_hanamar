@@ -5,7 +5,7 @@ pub mod common;
 mod plugins;
 
 use crate::common::AppState;
-use crate::plugins::game_menu::{DisplayQuality, GameState, Volume, game, menu, setup, splash};
+use crate::plugins::game_menu::{GameState, Hue, Volume, game, menu, setup, splash};
 use crate::plugins::world_generator::{cleanup, generate_world, reset};
 
 fn main() {
@@ -19,7 +19,7 @@ fn main() {
                 ..Default::default()
             }),)) // prevents blurry sprites
         .init_state::<GameState>()
-        .insert_resource(DisplayQuality::Medium)
+        .insert_resource(Hue::BLUE)
         .insert_resource(Volume(7))
         .add_systems(Startup, setup)
         .add_plugins((splash::splash_plugin, menu::menu_plugin, game::game_plugin))

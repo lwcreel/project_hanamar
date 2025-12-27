@@ -8,17 +8,11 @@ use rand::{Rng, rng};
 use noise::{BasicMulti, Perlin, utils::*};
 
 use crate::plugins::game_menu::GameState;
+use crate::plugins::game_menu::Hue;
 use crate::plugins::ui::ResetMapEvent;
 
 #[derive(Resource, Deref)]
 pub struct Root(Entity);
-
-enum Hue {
-    RED,
-    BLUE,
-    GREEN,
-    YELLOW,
-}
 
 fn get_hue_from_enum(hue: Hue) -> f32 {
     match hue {
@@ -58,7 +52,11 @@ fn get_color(val: f64, hue: Hue) -> Color {
     return color_result;
 }
 
-pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<GameState>>) {
+pub fn generate_world(
+    mut commands: Commands,
+    mut color: ResMut<Hue>,
+    mut next_state: ResMut<NextState<GameState>>,
+) {
     let map = generate_noise_map();
     let (grid_width, grid_height) = map.size();
     debug!("Map size: {}x{}", grid_width, grid_height);
@@ -79,7 +77,7 @@ pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<G
 
                     parent.spawn((
                         Sprite {
-                            color: get_color(val, Hue::BLUE),
+                            color: get_color(val, color.clone()),
                             custom_size: Some(Vec2::new(tile_size, tile_size)),
                             ..default()
                         },
