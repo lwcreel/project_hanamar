@@ -95,46 +95,24 @@ pub mod splash {
 }
 
 pub mod game {
-    use bevy::{
-        color::palettes::basic::{BLUE, LIME},
-        prelude::*,
-    };
+    use bevy::prelude::*;
 
-    use crate::cleanup;
     use crate::generate_world;
     use crate::plugins::camera::CameraPlugin;
     use crate::plugins::ui::UiPlugin;
+    use crate::{cleanup, plugins::ui::ResetMapEvent};
+
     use crate::reset;
 
-    use super::{GameState, Hue, TEXT_COLOR, Volume};
+    use super::GameState;
 
-    // This plugin will contain the game. In this case, it's just be a screen that will
-    // display the current settings for 5 seconds before returning to the menu
     pub fn game_plugin(app: &mut App) {
         app.add_systems(OnEnter(GameState::Game), generate_world)
             .add_plugins(CameraPlugin)
             .add_plugins(UiPlugin)
-            .add_systems(OnEnter(GameState::Build), reset)
-            .add_systems(Update, reset.run_if(in_state(GameState::Finished)))
+            .add_message::<ResetMapEvent>()
+            .add_systems(Update, reset.run_if(on_message::<ResetMapEvent>))
             .add_systems(OnExit(GameState::Game), cleanup);
-    }
-
-    // Tag component used to tag entities added on the game screen
-    #[derive(Component)]
-    struct OnGameScreen;
-
-    #[derive(Resource, Deref, DerefMut)]
-    struct GameTimer(Timer);
-
-    // Tick the timer, and change state when finished
-    fn game(
-        time: Res<Time>,
-        mut game_state: ResMut<NextState<GameState>>,
-        mut timer: ResMut<GameTimer>,
-    ) {
-        if timer.tick(time.delta()).is_finished() {
-            game_state.set(GameState::Menu);
-        }
     }
 }
 
