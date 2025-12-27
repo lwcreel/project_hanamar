@@ -7,19 +7,19 @@ use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
 
-use crate::plugins::game_menu::DisplayQuality;
 use crate::plugins::game_menu::GameState;
+use crate::plugins::game_menu::Hue;
 use crate::plugins::ui::ResetMapEvent;
 
 #[derive(Resource, Deref)]
 pub struct Root(Entity);
 
-fn get_hue_from_enum(hue: DisplayQuality) -> f32 {
+fn get_hue_from_enum(hue: Hue) -> f32 {
     match hue {
-        DisplayQuality::RED => 355.0,
-        DisplayQuality::BLUE => 240.0,
-        DisplayQuality::GREEN => 120.0,
-        DisplayQuality::YELLOW => 60.0,
+        Hue::RED => 355.0,
+        Hue::BLUE => 240.0,
+        Hue::GREEN => 120.0,
+        Hue::YELLOW => 60.0,
     }
 }
 
@@ -33,7 +33,7 @@ fn generate_noise_map() -> NoiseMap {
     return basicmulti;
 }
 
-fn get_color(val: f64, hue: DisplayQuality) -> Color {
+fn get_color(val: f64, hue: Hue) -> Color {
     let value = get_hue_from_enum(hue);
     // saturation at 75, hue from enum, L from .1 to 1.
     let color_result = match val.abs() {
@@ -54,7 +54,7 @@ fn get_color(val: f64, hue: DisplayQuality) -> Color {
 
 pub fn generate_world(
     mut commands: Commands,
-    mut color: ResMut<DisplayQuality>,
+    mut color: ResMut<Hue>,
     mut next_state: ResMut<NextState<GameState>>,
 ) {
     let map = generate_noise_map();

@@ -17,7 +17,7 @@ pub enum GameState {
 // TODO: Rename this
 // One of the two settings that can be set through the menu. It will be a resource in the app
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
-pub enum DisplayQuality {
+pub enum Hue {
     RED,
     BLUE,
     GREEN,
@@ -106,7 +106,7 @@ pub mod game {
     use crate::plugins::ui::UiPlugin;
     use crate::reset;
 
-    use super::{DisplayQuality, GameState, TEXT_COLOR, Volume};
+    use super::{GameState, Hue, TEXT_COLOR, Volume};
 
     // This plugin will contain the game. In this case, it's just be a screen that will
     // display the current settings for 5 seconds before returning to the menu
@@ -146,7 +146,7 @@ pub mod menu {
         prelude::*,
     };
 
-    use super::{DisplayQuality, GameState, TEXT_COLOR, Volume};
+    use super::{GameState, Hue, TEXT_COLOR, Volume};
 
     // This plugin manages the menu, with 5 different screens:
     // - a main menu with "New Game", "Settings", "Quit"
@@ -170,7 +170,7 @@ pub mod menu {
             )
             .add_systems(
                 Update,
-                (setting_button::<DisplayQuality>.run_if(in_state(MenuState::SettingsDisplay)),),
+                (setting_button::<Hue>.run_if(in_state(MenuState::SettingsDisplay)),),
             )
             // Systems to handle the sound settings screen
             .add_systems(OnEnter(MenuState::SettingsSound), sound_settings_menu_setup)
@@ -434,7 +434,7 @@ pub mod menu {
         ));
     }
 
-    fn display_settings_menu_setup(mut commands: Commands, display_quality: Res<DisplayQuality>) {
+    fn display_settings_menu_setup(mut commands: Commands, display_quality: Res<Hue>) {
         fn button_node() -> Node {
             Node {
                 width: px(200),
@@ -484,14 +484,11 @@ pub mod menu {
                         BackgroundColor(CRIMSON.into()),
                         Children::spawn((
                             // Display a label for the current setting
-                            Spawn((Text::new("Display Quality"), button_text_style())),
+                            Spawn((Text::new("Color"), button_text_style())),
                             SpawnWith(move |parent: &mut ChildSpawner| {
-                                for quality_setting in [
-                                    DisplayQuality::RED,
-                                    DisplayQuality::BLUE,
-                                    DisplayQuality::GREEN,
-                                    DisplayQuality::YELLOW,
-                                ] {
+                                for quality_setting in
+                                    [Hue::RED, Hue::BLUE, Hue::GREEN, Hue::YELLOW]
+                                {
                                     let mut entity = parent.spawn((
                                         Button,
                                         Node {
