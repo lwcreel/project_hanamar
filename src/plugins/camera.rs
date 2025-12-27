@@ -14,7 +14,6 @@ impl Plugin for CameraPlugin {
     }
 }
 
-/// 3D Orthographic camera setup
 fn setup_camera(mut commands: Commands) {
     commands.spawn(Camera2d);
 }

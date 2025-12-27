@@ -1,8 +1,6 @@
-use crate::AppState;
 use bevy::prelude::Color;
 use bevy::prelude::*;
 
-// use bevy::text::cosmic_text::Transform;
 use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};

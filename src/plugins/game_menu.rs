@@ -9,12 +9,9 @@ pub enum GameState {
     Splash,
     Menu,
     Game,
-    Build,
-    Finished,
     Setup,
 }
 
-// TODO: Rename this
 // One of the two settings that can be set through the menu. It will be a resource in the app
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
 pub enum Hue {
@@ -24,7 +21,6 @@ pub enum Hue {
     YELLOW,
 }
 
-// One of the two settings that can be set through the menu. It will be a resource in the app
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
 pub struct Volume(pub u32);
 
@@ -37,29 +33,20 @@ pub mod splash {
 
     use super::GameState;
 
-    // This plugin will display a splash screen with Bevy logo for 1 second before switching to the menu
     pub fn splash_plugin(app: &mut App) {
-        // As this plugin is managing the splash screen, it will focus on the state `GameState::Splash`
-        app
-            // When entering the state, spawn everything needed for this screen
-            .add_systems(OnEnter(GameState::Splash), splash_setup)
-            // While in this state, run the `countdown` system
+        app.add_systems(OnEnter(GameState::Splash), splash_setup)
             .add_systems(Update, countdown.run_if(in_state(GameState::Splash)));
     }
 
-    // Tag component used to tag entities added on the splash screen
     #[derive(Component)]
     struct OnSplashScreen;
 
-    // Newtype to use a `Timer` for this screen as a resource
     #[derive(Resource, Deref, DerefMut)]
     struct SplashTimer(Timer);
 
     fn splash_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         let icon = asset_server.load("branding/icon.png");
-        // Display the logo
         commands.spawn((
-            // This entity will be despawned when exiting the state
             DespawnOnExit(GameState::Splash),
             Node {
                 align_items: AlignItems::Center,
@@ -72,17 +59,14 @@ pub mod splash {
             children![(
                 ImageNode::new(icon),
                 Node {
-                    // This will set the logo to be 200px wide, and auto adjust its height
                     width: px(200),
                     ..default()
                 },
             )],
         ));
-        // Insert the timer as a resource
         commands.insert_resource(SplashTimer(Timer::from_seconds(1.0, TimerMode::Once)));
     }
 
-    // Tick the timer, and change state when finished
     fn countdown(
         mut game_state: ResMut<NextState<GameState>>,
         time: Res<Time>,
@@ -126,22 +110,11 @@ pub mod menu {
 
     use super::{GameState, Hue, TEXT_COLOR, Volume};
 
-    // This plugin manages the menu, with 5 different screens:
-    // - a main menu with "New Game", "Settings", "Quit"
-    // - a settings menu with two submenus and a back button
-    // - two settings screen with a setting that can be set and a back button
     pub fn menu_plugin(app: &mut App) {
-        app
-            // At start, the menu is not enabled. This will be changed in `menu_setup` when
-            // entering the `GameState::Menu` state.
-            // Current screen in the menu is handled by an independent state from `GameState`
-            .init_state::<MenuState>()
+        app.init_state::<MenuState>()
             .add_systems(OnEnter(GameState::Menu), menu_setup)
-            // Systems to handle the main menu screen
             .add_systems(OnEnter(MenuState::Main), main_menu_setup)
-            // Systems to handle the settings menu screen
             .add_systems(OnEnter(MenuState::Settings), settings_menu_setup)
-            // Systems to handle the display settings screen
             .add_systems(
                 OnEnter(MenuState::SettingsDisplay),
                 display_settings_menu_setup,
@@ -150,13 +123,11 @@ pub mod menu {
                 Update,
                 (setting_button::<Hue>.run_if(in_state(MenuState::SettingsDisplay)),),
             )
-            // Systems to handle the sound settings screen
             .add_systems(OnEnter(MenuState::SettingsSound), sound_settings_menu_setup)
             .add_systems(
                 Update,
                 setting_button::<Volume>.run_if(in_state(MenuState::SettingsSound)),
             )
-            // Common systems to all screens that handles buttons behavior
             .add_systems(
                 Update,
                 (menu_action, button_system).run_if(in_state(GameState::Menu)),
@@ -298,7 +269,7 @@ pub mod menu {
                 children![
                     // Display the game name
                     (
-                        Text::new("Bevy Game Menu UI"),
+                        Text::new("Project Hanamar"),
                         TextFont {
                             font_size: 67.0,
                             ..default()
@@ -309,10 +280,6 @@ pub mod menu {
                             ..default()
                         },
                     ),
-                    // Display three buttons for each action available from the main menu:
-                    // - new game
-                    // - settings
-                    // - quit
                     (
                         Button,
                         button_node.clone(),
@@ -452,8 +419,6 @@ pub mod menu {
                 },
                 BackgroundColor(CRIMSON.into()),
                 children![
-                    // Create a new `Node`, this time not setting its `flex_direction`. It will
-                    // use the default value, `FlexDirection::Row`, from left to right.
                     (
                         Node {
                             align_items: AlignItems::Center,
@@ -488,7 +453,6 @@ pub mod menu {
                             })
                         ))
                     ),
-                    // Display the back button to return to the settings screen
                     (
                         Button,
                         button_node(),

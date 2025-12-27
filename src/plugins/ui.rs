@@ -1,6 +1,3 @@
-//! This example illustrates how to create a button that changes color and text based on its
-//! interaction state.
-
 use crate::plugins::game_menu::GameState;
 use bevy::prelude::*;
 
