@@ -14,12 +14,14 @@ pub enum GameState {
     Setup,
 }
 
+// TODO: Rename this
 // One of the two settings that can be set through the menu. It will be a resource in the app
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
 pub enum DisplayQuality {
-    Low,
-    Medium,
-    High,
+    RED,
+    BLUE,
+    GREEN,
+    YELLOW,
 }
 
 // One of the two settings that can be set through the menu. It will be a resource in the app
@@ -485,9 +487,10 @@ pub mod menu {
                             Spawn((Text::new("Display Quality"), button_text_style())),
                             SpawnWith(move |parent: &mut ChildSpawner| {
                                 for quality_setting in [
-                                    DisplayQuality::Low,
-                                    DisplayQuality::Medium,
-                                    DisplayQuality::High,
+                                    DisplayQuality::RED,
+                                    DisplayQuality::BLUE,
+                                    DisplayQuality::GREEN,
+                                    DisplayQuality::YELLOW,
                                 ] {
                                     let mut entity = parent.spawn((
                                         Button,

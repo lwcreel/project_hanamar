@@ -7,25 +7,19 @@ use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
 
+use crate::plugins::game_menu::DisplayQuality;
 use crate::plugins::game_menu::GameState;
 use crate::plugins::ui::ResetMapEvent;
 
 #[derive(Resource, Deref)]
 pub struct Root(Entity);
 
-enum Hue {
-    RED,
-    BLUE,
-    GREEN,
-    YELLOW,
-}
-
-fn get_hue_from_enum(hue: Hue) -> f32 {
+fn get_hue_from_enum(hue: DisplayQuality) -> f32 {
     match hue {
-        Hue::RED => 355.0,
-        Hue::BLUE => 240.0,
-        Hue::GREEN => 120.0,
-        Hue::YELLOW => 60.0,
+        DisplayQuality::RED => 355.0,
+        DisplayQuality::BLUE => 240.0,
+        DisplayQuality::GREEN => 120.0,
+        DisplayQuality::YELLOW => 60.0,
     }
 }
 
@@ -39,7 +33,7 @@ fn generate_noise_map() -> NoiseMap {
     return basicmulti;
 }
 
-fn get_color(val: f64, hue: Hue) -> Color {
+fn get_color(val: f64, hue: DisplayQuality) -> Color {
     let value = get_hue_from_enum(hue);
     // saturation at 75, hue from enum, L from .1 to 1.
     let color_result = match val.abs() {
@@ -58,7 +52,11 @@ fn get_color(val: f64, hue: Hue) -> Color {
     return color_result;
 }
 
-pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<GameState>>) {
+pub fn generate_world(
+    mut commands: Commands,
+    mut color: ResMut<DisplayQuality>,
+    mut next_state: ResMut<NextState<GameState>>,
+) {
     let map = generate_noise_map();
     let (grid_width, grid_height) = map.size();
     debug!("Map size: {}x{}", grid_width, grid_height);
@@ -79,7 +77,7 @@ pub fn generate_world(mut commands: Commands, mut next_state: ResMut<NextState<G
 
                     parent.spawn((
                         Sprite {
-                            color: get_color(val, Hue::BLUE),
+                            color: get_color(val, color.clone()),
                             custom_size: Some(Vec2::new(tile_size, tile_size)),
                             ..default()
                         },
