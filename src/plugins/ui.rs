@@ -1,6 +1,3 @@
-//! This example illustrates how to create a button that changes color and text based on its
-//! interaction state.
-
 use crate::plugins::game_menu::GameState;
 use bevy::prelude::*;
 
@@ -21,7 +18,6 @@ impl Plugin for UiPlugin {
 #[derive(Event, Message)]
 pub struct ResetMapEvent;
 
-#[allow(clippy::type_complexity)]
 pub fn button_system(
     mut interaction_query: Query<
         (&Interaction, &mut BackgroundColor),
@@ -47,7 +43,7 @@ pub fn button_system(
     }
 }
 
-pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<GameState>>) {
+pub fn setup_button(mut commands: Commands) {
     commands
         .spawn(Node {
             right: Val::Px(10.0),
@@ -77,5 +73,4 @@ pub fn setup_button(mut commands: Commands, mut next_state: ResMut<NextState<Gam
                     parent.spawn((Text::new("Exit"), TextColor(Color::srgb(0.9, 0.9, 0.9))));
                 });
         });
-    //next_state.set(GameState::Menu);
 }

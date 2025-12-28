@@ -1,8 +1,6 @@
-use crate::AppState;
 use bevy::prelude::Color;
 use bevy::prelude::*;
 
-// use bevy::text::cosmic_text::Transform;
 use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
@@ -52,11 +50,7 @@ fn get_color(val: f64, hue: Hue) -> Color {
     return color_result;
 }
 
-pub fn generate_world(
-    mut commands: Commands,
-    mut color: ResMut<Hue>,
-    mut next_state: ResMut<NextState<GameState>>,
-) {
+pub fn generate_world(mut commands: Commands, color: ResMut<Hue>) {
     let map = generate_noise_map();
     let (grid_width, grid_height) = map.size();
     debug!("Map size: {}x{}", grid_width, grid_height);
@@ -89,8 +83,6 @@ pub fn generate_world(
         .id();
 
     commands.insert_resource(Root(root));
-
-    //next_state.set(GameState::Finished);
 }
 
 pub fn cleanup(mut commands: Commands, root: Res<Root>) {
@@ -102,6 +94,6 @@ pub fn reset(
     mut next_state: ResMut<NextState<GameState>>,
 ) {
     for _ in events.read() {
-        next_state.set(GameState::Build);
+        next_state.set(GameState::Menu);
     }
 }
