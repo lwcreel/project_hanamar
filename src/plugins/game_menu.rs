@@ -90,8 +90,17 @@ pub mod game {
 
     use super::GameState;
 
+    use crate::plugins::world_generator::{
+        log_tile, move_player, setup, spawn_fake_player, update_tilemap, update_tileset_image,
+    };
+
     pub fn game_plugin(app: &mut App) {
         app.add_systems(OnEnter(GameState::Game), generate_world)
+            .add_systems(Startup, (setup, spawn_fake_player).chain())
+            .add_systems(
+                Update,
+                (update_tileset_image, update_tilemap, move_player, log_tile),
+            )
             .add_plugins(CameraPlugin)
             .add_plugins(UiPlugin)
             .add_message::<ResetMapEvent>()
