@@ -91,15 +91,22 @@ pub mod game {
     use super::GameState;
 
     use crate::plugins::world_generator::{
-        log_tile, move_player, setup, spawn_fake_player, update_tilemap, update_tileset_image,
+        SeededRng, log_tile, move_player, setup, spawn_fake_player, update_tilemap,
+        update_tileset_image,
     };
 
+    //            .add_systems(Update, button_system.run_if(in_state(GameState::Game)))
     pub fn game_plugin(app: &mut App) {
         app.add_systems(OnEnter(GameState::Game), generate_world)
-            .add_systems(Startup, (setup, spawn_fake_player).chain())
+            .add_systems(OnEnter(GameState::Game), (setup, spawn_fake_player).chain())
             .add_systems(
                 Update,
-                (update_tileset_image, update_tilemap, move_player, log_tile),
+                (
+                    update_tileset_image.run_if(in_state(GameState::Game)),
+                    update_tilemap.run_if(in_state(GameState::Game)),
+                    move_player.run_if(in_state(GameState::Game)),
+                    log_tile.run_if(in_state(GameState::Game)),
+                ),
             )
             .add_plugins(CameraPlugin)
             .add_plugins(UiPlugin)
