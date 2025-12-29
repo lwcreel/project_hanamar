@@ -97,7 +97,7 @@ pub mod game {
 
     //            .add_systems(Update, button_system.run_if(in_state(GameState::Game)))
     pub fn game_plugin(app: &mut App) {
-        app.add_systems(OnEnter(GameState::Game), generate_world)
+        app //.add_systems(OnEnter(GameState::Game), generate_world)
             .add_systems(OnEnter(GameState::Game), (setup, spawn_fake_player).chain())
             .add_systems(
                 Update,
@@ -108,8 +108,8 @@ pub mod game {
                     log_tile.run_if(in_state(GameState::Game)),
                 ),
             )
-            .add_plugins(CameraPlugin)
-            .add_plugins(UiPlugin)
+            //.add_plugins(CameraPlugin)
+            //.add_plugins(UiPlugin)
             .add_message::<ResetMapEvent>()
             .add_systems(Update, reset.run_if(on_message::<ResetMapEvent>))
             .add_systems(OnExit(GameState::Game), cleanup);
