@@ -59,7 +59,7 @@ pub fn setup(mut commands: Commands, assets: Res<AssetServer>) {
 
     for col_x in 0..chunk_size.x {
         for col_y in 0..chunk_size.y {
-            tile_vec.push(((map.get_value(col_x as usize, col_y as usize) + 1.0) * 2.5) as u16);
+            tile_vec.push(((map.get_value(col_x as usize, col_y as usize) + 0.5) * 5.0) as u16);
         }
     }
 
