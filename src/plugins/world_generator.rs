@@ -22,8 +22,8 @@ fn generate_noise_map() -> NoiseMap {
     return basicmulti;
 }
 
-pub fn cleanup(mut commands: Commands, root: Res<Root>) {
-    commands.entity(**root).despawn();
+pub fn cleanup() {
+    //commands.entity(**).despawn();
 }
 
 pub fn reset(
