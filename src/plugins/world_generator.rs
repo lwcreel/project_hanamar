@@ -9,6 +9,8 @@ use crate::plugins::game_menu::GameState;
 use crate::plugins::game_menu::Hue;
 use crate::plugins::ui::ResetMapEvent;
 
+// TODO: Fix Exit Button so Map despawns
+
 #[derive(Resource, Deref)]
 pub struct Root(Entity);
 
