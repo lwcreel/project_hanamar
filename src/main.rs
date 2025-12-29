@@ -4,7 +4,7 @@ use bevy::prelude::*;
 mod plugins;
 
 use crate::plugins::game_menu::{GameState, Hue, Volume, game, menu, setup, splash};
-use crate::plugins::world_generator::{cleanup, generate_world, reset};
+use crate::plugins::world_generator::{cleanup, reset};
 
 fn main() {
     App::new()

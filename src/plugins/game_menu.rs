@@ -81,7 +81,6 @@ pub mod splash {
 pub mod game {
     use bevy::prelude::*;
 
-    use crate::generate_world;
     use crate::plugins::camera::CameraPlugin;
     use crate::plugins::ui::UiPlugin;
     use crate::{cleanup, plugins::ui::ResetMapEvent};
@@ -91,14 +90,11 @@ pub mod game {
     use super::GameState;
 
     use crate::plugins::world_generator::{
-        SeededRng, log_tile, move_player, setup, spawn_fake_player, update_tilemap,
-        update_tileset_image,
+        log_tile, move_player, setup, spawn_fake_player, update_tilemap, update_tileset_image,
     };
 
-    //            .add_systems(Update, button_system.run_if(in_state(GameState::Game)))
     pub fn game_plugin(app: &mut App) {
-        app //.add_systems(OnEnter(GameState::Game), generate_world)
-            .add_systems(OnEnter(GameState::Game), (setup, spawn_fake_player).chain())
+        app.add_systems(OnEnter(GameState::Game), (setup, spawn_fake_player).chain())
             .add_systems(
                 Update,
                 (
@@ -108,8 +104,8 @@ pub mod game {
                     log_tile.run_if(in_state(GameState::Game)),
                 ),
             )
-            //.add_plugins(CameraPlugin)
-            //.add_plugins(UiPlugin)
+            .add_plugins(CameraPlugin)
+            .add_plugins(UiPlugin)
             .add_message::<ResetMapEvent>()
             .add_systems(Update, reset.run_if(on_message::<ResetMapEvent>))
             .add_systems(OnExit(GameState::Game), cleanup);
