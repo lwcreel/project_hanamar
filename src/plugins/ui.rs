@@ -15,6 +15,7 @@ impl Plugin for UiPlugin {
     }
 }
 
+// TODO: Rename to Exit
 #[derive(Event, Message)]
 pub struct ResetMapEvent;
 

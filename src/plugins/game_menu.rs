@@ -81,7 +81,6 @@ pub mod splash {
 pub mod game {
     use bevy::prelude::*;
 
-    use crate::generate_world;
     use crate::plugins::camera::CameraPlugin;
     use crate::plugins::ui::UiPlugin;
     use crate::{cleanup, plugins::ui::ResetMapEvent};
@@ -90,8 +89,21 @@ pub mod game {
 
     use super::GameState;
 
+    use crate::plugins::world_generator::{
+        log_tile, move_player, setup, spawn_fake_player, update_tilemap, update_tileset_image,
+    };
+
     pub fn game_plugin(app: &mut App) {
-        app.add_systems(OnEnter(GameState::Game), generate_world)
+        app.add_systems(OnEnter(GameState::Game), (setup, spawn_fake_player).chain())
+            .add_systems(
+                Update,
+                (
+                    update_tileset_image.run_if(in_state(GameState::Game)),
+                    update_tilemap.run_if(in_state(GameState::Game)),
+                    move_player.run_if(in_state(GameState::Game)),
+                    log_tile.run_if(in_state(GameState::Game)),
+                ),
+            )
             .add_plugins(CameraPlugin)
             .add_plugins(UiPlugin)
             .add_message::<ResetMapEvent>()
