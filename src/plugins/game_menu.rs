@@ -1,24 +1,15 @@
+use crate::plugins::states::GameState;
+
 use bevy::prelude::*;
 const TEXT_COLOR: Color = Color::srgb(0.9, 0.9, 0.9);
-
-// Enum that will be used as a global state for the game
-// TODO: Move to separate file
-#[derive(Clone, Copy, Default, Eq, PartialEq, Debug, Hash, States)]
-pub enum GameState {
-    #[default]
-    Splash,
-    Menu,
-    Game,
-    Setup,
-}
 
 // One of the two settings that can be set through the menu. It will be a resource in the app
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
 pub enum Hue {
-    RED,
-    BLUE,
-    GREEN,
-    YELLOW,
+    Red,
+    Blue,
+    Green,
+    Yellow,
 }
 
 #[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
@@ -442,7 +433,7 @@ pub mod menu {
                             Spawn((Text::new("Color"), button_text_style())),
                             SpawnWith(move |parent: &mut ChildSpawner| {
                                 for quality_setting in
-                                    [Hue::RED, Hue::BLUE, Hue::GREEN, Hue::YELLOW]
+                                    [Hue::Red, Hue::Blue, Hue::Green, Hue::Yellow]
                                 {
                                     let mut entity = parent.spawn((
                                         Button,

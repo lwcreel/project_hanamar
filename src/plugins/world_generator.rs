@@ -1,31 +1,37 @@
+// Bevy Imports
 use bevy::prelude::Color;
 use bevy::prelude::*;
 
+use bevy::{
+    color::palettes::tailwind::RED_400,
+    sprite_render::{TileData, TilemapChunk, TilemapChunkTileData},
+};
+
+// Other Imports
+use noise::{BasicMulti, Perlin, utils::*};
 use rand::{Rng, rng};
 
-use noise::{BasicMulti, Perlin, utils::*};
-
-use crate::plugins::game_menu::GameState;
-use crate::plugins::game_menu::Hue;
+// Custom Imports
+use crate::plugins::states::GameState;
 use crate::plugins::ui::ResetMapEvent;
 
 // TODO: Fix Exit Button so Map despawns
 
-#[derive(Resource, Deref)]
-pub struct Root(Entity);
+#[derive(Component, Deref, DerefMut)]
+pub struct UpdateTimer(Timer);
+
+#[derive(Resource, Deref, DerefMut)]
+pub struct Tiles(Vec<Option<TileData>>);
+
+#[derive(Component)]
+pub struct MovePlayer;
 
 fn generate_noise_map() -> NoiseMap {
-    let mut rng = rng();
-    let seed: u32 = rng.random();
-
-    let basicmulti = BasicMulti::<Perlin>::new(seed);
-    let basicmulti = PlaneMapBuilder::new(&basicmulti).build();
-
-    return basicmulti;
+    PlaneMapBuilder::new(&BasicMulti::<Perlin>::new(rng().random())).build()
 }
 
 pub fn cleanup() {
-    //commands.entity(**).despawn();
+    //commands.entity(**root).despawn();
 }
 
 pub fn reset(
@@ -37,22 +43,8 @@ pub fn reset(
     }
 }
 
-use bevy::{
-    color::palettes::tailwind::RED_400,
-    sprite_render::{TileData, TilemapChunk, TilemapChunkTileData},
-};
-
-#[derive(Component, Deref, DerefMut)]
-pub struct UpdateTimer(Timer);
-
-#[derive(Resource, Deref, DerefMut)]
-pub struct Tiles(Vec<Option<TileData>>);
-
-// TODO: Fix cloning, various awful problems
 pub fn setup(mut commands: Commands, assets: Res<AssetServer>) {
     let map = generate_noise_map();
-    let (grid_width, grid_height) = map.size();
-    debug!("Map size: {}x{}", grid_width, grid_height);
 
     let chunk_size = UVec2::splat(64);
     let tile_display_size = UVec2::splat(8);
@@ -78,6 +70,10 @@ pub fn setup(mut commands: Commands, assets: Res<AssetServer>) {
         })
         .collect();
 
+    // Clone Tile Data as a Resource
+    commands.insert_resource(Tiles(tile_data.clone()));
+    commands.spawn(Camera2d);
+
     commands.spawn((
         TilemapChunk {
             chunk_size,
@@ -85,17 +81,10 @@ pub fn setup(mut commands: Commands, assets: Res<AssetServer>) {
             tileset: assets.load("textures/array_texture.png"),
             ..default()
         },
-        TilemapChunkTileData(tile_data.clone()),
+        TilemapChunkTileData(tile_data),
         UpdateTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
     ));
-
-    commands.spawn(Camera2d);
-
-    commands.insert_resource(Tiles(tile_data));
 }
-
-#[derive(Component)]
-pub struct MovePlayer;
 
 pub fn spawn_fake_player(
     mut commands: Commands,
@@ -150,7 +139,7 @@ pub fn update_tileset_image(
 pub fn update_tilemap(
     time: Res<Time>,
     mut query: Query<(&mut TilemapChunkTileData, &mut UpdateTimer)>,
-    mut tiles: ResMut<Tiles>,
+    tiles: ResMut<Tiles>,
 ) {
     for (mut tile_data, mut timer) in query.iter_mut() {
         timer.tick(time.delta());
