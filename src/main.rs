@@ -1,9 +1,10 @@
+use crate::plugins::states::GameState;
 use bevy::log::{Level, LogPlugin};
 use bevy::prelude::*;
 
 mod plugins;
 
-use crate::plugins::game_menu::{GameState, Hue, Volume, game, menu, setup, splash};
+use crate::plugins::game_menu::{Hue, Volume, game, menu, setup, splash};
 use crate::plugins::world_generator::{cleanup, reset};
 
 fn main() {

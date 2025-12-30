@@ -1,4 +1,4 @@
-use crate::plugins::game_menu::GameState;
+use crate::plugins::states::GameState;
 use bevy::prelude::*;
 
 const NORMAL_BUTTON: Color = Color::linear_rgb(0.15, 0.15, 0.15);

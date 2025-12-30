@@ -5,8 +5,8 @@ use rand::{Rng, rng};
 
 use noise::{BasicMulti, Perlin, utils::*};
 
-use crate::plugins::game_menu::GameState;
 use crate::plugins::game_menu::Hue;
+use crate::plugins::states::GameState;
 use crate::plugins::ui::ResetMapEvent;
 
 // TODO: Fix Exit Button so Map despawns
