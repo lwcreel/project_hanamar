@@ -18,7 +18,7 @@ fn main() {
                 ..Default::default()
             }),)) // prevents blurry sprites
         .init_state::<GameState>()
-        .insert_resource(Hue::BLUE)
+        .insert_resource(Hue::Blue)
         .insert_resource(Volume(7))
         .add_systems(Startup, setup)
         .add_plugins((splash::splash_plugin, menu::menu_plugin, game::game_plugin))
