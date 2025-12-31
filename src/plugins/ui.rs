@@ -11,20 +11,20 @@ impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Game), setup_button)
             .add_systems(Update, button_system.run_if(in_state(GameState::Game)))
-            .add_message::<ResetMapEvent>();
+            .add_message::<ExitEvent>();
     }
 }
 
 // TODO: Rename to Exit
 #[derive(Event, Message)]
-pub struct ResetMapEvent;
+pub struct ExitEvent;
 
 pub fn button_system(
     mut interaction_query: Query<
         (&Interaction, &mut BackgroundColor),
         (Changed<Interaction>, With<Button>),
     >,
-    mut events: MessageWriter<ResetMapEvent>,
+    mut events: MessageWriter<ExitEvent>,
     mut mouse_buttons: ResMut<ButtonInput<MouseButton>>,
 ) {
     for (interaction, mut color) in &mut interaction_query {
@@ -32,7 +32,7 @@ pub fn button_system(
             Interaction::Pressed => {
                 mouse_buttons.clear_just_pressed(MouseButton::Left);
                 *color = PRESSED_BUTTON.into();
-                events.write(ResetMapEvent);
+                events.write(ExitEvent);
             }
             Interaction::Hovered => {
                 *color = HOVERED_BUTTON.into();

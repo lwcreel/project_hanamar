@@ -13,9 +13,7 @@ use rand::{Rng, rng};
 
 // Custom Imports
 use crate::plugins::states::GameState;
-use crate::plugins::ui::ResetMapEvent;
-
-// TODO: Fix Exit Button so Map despawns
+use crate::plugins::ui::ExitEvent;
 
 #[derive(Component, Deref, DerefMut)]
 pub struct UpdateTimer(Timer);
@@ -26,18 +24,19 @@ pub struct Tiles(Vec<Option<TileData>>);
 #[derive(Component)]
 pub struct MovePlayer;
 
+#[derive(Resource, Deref)]
+pub struct Root(Entity);
+
 fn generate_noise_map() -> NoiseMap {
     PlaneMapBuilder::new(&BasicMulti::<Perlin>::new(rng().random())).build()
 }
 
-pub fn cleanup() {
-    //commands.entity(**root).despawn();
+pub fn cleanup(mut commands: Commands, root: Res<Root>) {
+    commands.remove_resource::<Tiles>();
+    commands.entity(**root).despawn();
 }
 
-pub fn reset(
-    mut events: MessageReader<ResetMapEvent>,
-    mut next_state: ResMut<NextState<GameState>>,
-) {
+pub fn reset(mut events: MessageReader<ExitEvent>, mut next_state: ResMut<NextState<GameState>>) {
     for _ in events.read() {
         next_state.set(GameState::Menu);
     }
@@ -74,16 +73,21 @@ pub fn setup(mut commands: Commands, assets: Res<AssetServer>) {
     commands.insert_resource(Tiles(tile_data.clone()));
     commands.spawn(Camera2d);
 
-    commands.spawn((
-        TilemapChunk {
-            chunk_size,
-            tile_display_size,
-            tileset: assets.load("textures/array_texture.png"),
-            ..default()
-        },
-        TilemapChunkTileData(tile_data),
-        UpdateTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
-    ));
+    let root = commands
+        .spawn((Transform::default(), Visibility::default()))
+        .with_child((
+            TilemapChunk {
+                chunk_size,
+                tile_display_size,
+                tileset: assets.load("textures/array_texture.png"),
+                ..default()
+            },
+            TilemapChunkTileData(tile_data),
+            UpdateTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
+        ))
+        .id();
+
+    commands.insert_resource(Root(root));
 }
 
 pub fn spawn_fake_player(
