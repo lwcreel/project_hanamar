@@ -74,7 +74,7 @@ pub mod game {
 
     use crate::plugins::camera::CameraPlugin;
     use crate::plugins::ui::UiPlugin;
-    use crate::{cleanup, plugins::ui::ResetMapEvent};
+    use crate::{cleanup, plugins::ui::ExitEvent};
 
     use crate::reset;
 
@@ -97,8 +97,8 @@ pub mod game {
             )
             .add_plugins(CameraPlugin)
             .add_plugins(UiPlugin)
-            .add_message::<ResetMapEvent>()
-            .add_systems(Update, reset.run_if(on_message::<ResetMapEvent>))
+            .add_message::<ExitEvent>()
+            .add_systems(Update, reset.run_if(on_message::<ExitEvent>))
             .add_systems(OnExit(GameState::Game), cleanup);
     }
 }

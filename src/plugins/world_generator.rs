@@ -13,7 +13,7 @@ use rand::{Rng, rng};
 
 // Custom Imports
 use crate::plugins::states::GameState;
-use crate::plugins::ui::ResetMapEvent;
+use crate::plugins::ui::ExitEvent;
 
 // TODO: Fix Exit Button so Map despawns
 
@@ -34,10 +34,7 @@ pub fn cleanup() {
     //commands.entity(**root).despawn();
 }
 
-pub fn reset(
-    mut events: MessageReader<ResetMapEvent>,
-    mut next_state: ResMut<NextState<GameState>>,
-) {
+pub fn reset(mut events: MessageReader<ExitEvent>, mut next_state: ResMut<NextState<GameState>>) {
     for _ in events.read() {
         next_state.set(GameState::Menu);
     }
